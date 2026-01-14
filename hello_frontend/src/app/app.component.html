@@ -1,3 +1,92 @@
-<div class="container">
-  <h1>{{ title }}</h1>
+<div class="page">
+  <main class="shell" aria-label="Hello World dashboard">
+    <header class="header">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <span class="logo-dot"></span>
+        </div>
+        <div class="brand-text">
+          <h1 class="title">Hello Dashboard</h1>
+          <p class="subtitle">Live hello, location, and temperature from the backend</p>
+        </div>
+      </div>
+
+      <button class="btn" type="button" (click)="refresh()" [disabled]="pageLoading">
+        <span class="btn-label">Refresh</span>
+      </button>
+    </header>
+
+    <section class="card surface" aria-label="Dashboard content">
+      <div class="cards">
+        <section class="info-card" aria-label="Hello message">
+          <div class="info-head">
+            <h2 class="info-title">Hello</h2>
+            <span class="pill pill-primary">/api/hello</span>
+          </div>
+
+          <div class="info-body" [attr.data-state]="hello.status">
+            <div *ngIf="hello.status === 'loading'" class="skeleton">
+              <div class="s-line w-70"></div>
+              <div class="s-line w-45"></div>
+            </div>
+
+            <p *ngIf="hello.status === 'success'" class="value">{{ hello.value }}</p>
+
+            <div *ngIf="hello.status === 'error'" class="error">
+              <p class="error-title">Could not load hello</p>
+              <p class="error-msg">{{ hello.error }}</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="info-card" aria-label="Current location">
+          <div class="info-head">
+            <h2 class="info-title">Location</h2>
+            <span class="pill pill-secondary">/api/location</span>
+          </div>
+
+          <div class="info-body" [attr.data-state]="location.status">
+            <div *ngIf="location.status === 'loading'" class="skeleton">
+              <div class="s-line w-80"></div>
+              <div class="s-line w-50"></div>
+            </div>
+
+            <p *ngIf="location.status === 'success'" class="value">{{ location.value }}</p>
+
+            <div *ngIf="location.status === 'error'" class="error">
+              <p class="error-title">Could not load location</p>
+              <p class="error-msg">{{ location.error }}</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="info-card" aria-label="Current temperature">
+          <div class="info-head">
+            <h2 class="info-title">Temperature</h2>
+            <span class="pill pill-amber">/api/temperature</span>
+          </div>
+
+          <div class="info-body" [attr.data-state]="temperature.status">
+            <div *ngIf="temperature.status === 'loading'" class="skeleton">
+              <div class="s-line w-55"></div>
+              <div class="s-line w-35"></div>
+            </div>
+
+            <p *ngIf="temperature.status === 'success'" class="value">
+              {{ temperature.value }}
+            </p>
+
+            <div *ngIf="temperature.status === 'error'" class="error">
+              <p class="error-title">Could not load temperature</p>
+              <p class="error-msg">{{ temperature.error }}</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div *ngIf="hasAnyError()" class="footnote" role="note">
+        Tip: Ensure the backend is running on <code>http://localhost:3001</code>.
+      </div>
+    </section>
+  </main>
 </div>
