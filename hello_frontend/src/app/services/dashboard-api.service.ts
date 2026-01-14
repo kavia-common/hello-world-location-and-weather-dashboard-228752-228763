@@ -7,11 +7,14 @@ export interface HelloResponse {
 }
 
 export interface LocationResponse {
-  location: string;
+  city: string;
+  region: string;
+  country: string;
 }
 
 export interface TemperatureResponse {
-  temperature: string;
+  temperature: number;
+  units: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -49,7 +52,11 @@ export class DashboardApiService {
 
   getLocation() {
     return this.http.get<LocationResponse>(`${this.baseUrl}/api/location`).pipe(
-      map((r) => r?.location ?? ''),
+      map((r) => {
+        if (!r) return '';
+        const parts = [r.city, r.region, r.country].filter(Boolean);
+        return parts.join(', ');
+      }),
       catchError((e) => throwError(() => this.toUserFacingError(e, 'Location')))
     );
   }
@@ -58,7 +65,11 @@ export class DashboardApiService {
     return this.http
       .get<TemperatureResponse>(`${this.baseUrl}/api/temperature`)
       .pipe(
-        map((r) => r?.temperature ?? ''),
+        map((r) => {
+          if (!r) return '';
+          const units = r.units ?? '';
+          return `${r.temperature}°${units}`;
+        }),
         catchError((e) =>
           throwError(() => this.toUserFacingError(e, 'Temperature'))
         )
