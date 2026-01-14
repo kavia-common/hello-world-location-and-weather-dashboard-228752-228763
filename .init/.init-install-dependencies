@@ -1,0 +1,4 @@
+{
+    "command": "npm install --legacy-peer-deps",
+    "working_directory": "/home/kavia/workspace/code-generation/hello-world-location-and-weather-dashboard-228752-228763/hello_frontend"
+}
